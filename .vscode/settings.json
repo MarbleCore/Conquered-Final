@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Conquered.sln"
+    "dotnet.defaultSolution": "Conquered-Final.sln"
 }

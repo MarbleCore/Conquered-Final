@@ -6,66 +6,80 @@ using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
-
 using static Unity.Mathematics.math;
 
+//Main script for handling the overall game
 public class Game : MonoBehaviour
 {
+	//References mazevisualization gameobject
 	[SerializeField]
 	MazeVisualization visualization;
 
+	//Fields where two int values can be changed to determine maze size
 	[SerializeField]
 	int2 mazeSize = int2(5, 5);
 
+	//Field where int input can determine seed, where 0 will be a random seed for generating maze
 	[SerializeField, Tooltip("Use zero for random seed.")]
 	int seed;
 
+	//References player gameobject
 	[SerializeField]
 	Player player;
 
+	//Field where float input determines opening dead ends probability
 	[SerializeField, Range(0f, 1f)]
 	float openDeadEndProbability = 0.5f;
 
+	//List to contain enemy clones
 	[SerializeField]
 	List<GameObject> enemies;
 
+	//Field to input number of desired enemies to spawn
 	[SerializeField]
 	int numberOfEnemies;
 
+	//References enemy gameobject
 	public GameObject Enemy;
 
+	//References boss gameobject
 	[SerializeField]
 	Boss boss;
 
+	//Bool that determines to see if the game is running/being played
 	bool isPlaying;
 
+	//Bool that determines if the game should be paused or not
 	public bool isPaused;
 
+	//References maze gameobject
 	Maze maze;
 
+	//References maze cell objects array
 	MazeCellObject[] cellObjects;
 
-	List<int2> coordinates;
-
+	//References pausetracking gameobject
 	[SerializeField]
 	PauseTracking pausetracking;
 
-	[SerializeField]
-	BattleSystem battle;
-
-	public int floorNumber = 1;
-
+	//References endtracking gameobject
 	[SerializeField]
 	EndTracking endtracking;
 
+	//Int that keeps track of current floor number
+	public int floorNumber = 1;
+
+	//Bool that keeps track if the player is alive or dead
 	public bool isAlive;
 
+	//Sets floor number to 1 and isAlive to true when program starts
 	void Start()
 	{
 		floorNumber = 1;
 		isAlive = true;
 	}
 
+	//Initializes all the setup required to start a new game, including generating a maze and setting player, boss and enemy clones correctly
 	void StartNewGame ()
 	{
 		isPlaying = true;
@@ -119,6 +133,7 @@ public class Game : MonoBehaviour
 		}
 	}
 
+	//Update is called once per frame, which will start a new game if isPlaying is false
 	void Update()
 	{
 		if (isPlaying)
@@ -132,6 +147,7 @@ public class Game : MonoBehaviour
 		}
 	}
 
+	//This update is also called once per frame (due to Update) and takes player movement while checking if the player pauses the game
 	void UpdateGame()
 	{
 		player.Move();
@@ -153,6 +169,7 @@ public class Game : MonoBehaviour
 		}
 	}
 
+	//Setup for ending the game, including checks for how the game should correctly end, destroying and deactivating things where necessary
 	public void EndGame()
 	{
 		if (isAlive)
@@ -188,6 +205,7 @@ public class Game : MonoBehaviour
 		OnDestroy();
 	}
 
+	//Disposes the maze
 	void OnDestroy ()
 	{
 		maze.Dispose();

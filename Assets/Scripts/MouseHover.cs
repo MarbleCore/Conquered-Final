@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+//Used to detect if the mouse is hovering over text to change its color
 public class MouseHover : MonoBehaviour
 {
     void Start()

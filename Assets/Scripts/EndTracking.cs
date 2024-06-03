@@ -2,44 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-/// <summary>
-/// Makes endcreen locked onto player position, at all times 
-/// </summary>
+//Makes endcreen locked onto player position, at all times 
 public class EndTracking : MonoBehaviour
 {
-    /// <summary>
-    /// Target the endscreen is locked onto
-    /// </summary>
+    //Target the endscreen is locked onto
     public Transform target;
-    /// <summary>
-    /// How offset the endscreen should be
-    /// </summary>
+
+    //How offset the endscreen should be
     [SerializeField]
     public Vector3 offset;
 
+    //References game gameobject
     [SerializeField]
     Game game;
 
+    //References win text gameobject
     [SerializeField]
     GameObject win;
 
+    //References lose text gameobject
     [SerializeField]
     GameObject lose;
 
+    //Initially turns gameobject off
     void Start()
     {
         gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void LateUpdate()
     {
-        // get target position, apply offset, and set as endscreen position
+        //Get target position, apply offset, and set as endscreen position
         transform.position = target.position + offset;
         transform.eulerAngles = new Vector3(0,0,0);
     }
 
+    //Runs when game ends, and display corresponding win or lose text based on which text gameobject to disable
     public void GameEnd()
     {
         gameObject.SetActive(true);

@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Handles object pooling, making maze cell prefabs reusable, optimizing memory usage
 public class MazeCellObject : MonoBehaviour
 {
+//Only compiles if in unity editor
 #if UNITY_EDITOR
 	static List<Stack<MazeCellObject>> pools;
 
+	//This method is run before the scene is loaded, which initializes pools if null, or clears it if it exists
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	static void ClearPools ()
 	{
@@ -26,6 +29,7 @@ public class MazeCellObject : MonoBehaviour
 	[System.NonSerialized]
 	System.Collections.Generic.Stack<MazeCellObject> pool;
 
+	//This method gets an instance of a maze cell component; if reusable for the next maze level, use it again; else make a new instance and add it to the pool
 	public MazeCellObject GetInstance ()
 	{
 		if (pool == null)
@@ -47,6 +51,7 @@ public class MazeCellObject : MonoBehaviour
 		return instance;
 	}
 
+	//This method pushes maze cell components back into the pool and deactivates them when not in use
 	public void Recycle ()
 	{
 		pool.Push(this);

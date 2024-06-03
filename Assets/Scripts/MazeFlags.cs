@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Enumeration of different flags representing directions in maze
 [System.Flags]
 public enum MazeFlags
 {
@@ -15,6 +16,7 @@ public enum MazeFlags
 	PassageAll = 0b1111
 }
 
+//Handles manipulation of flags
 public static class MazeFlagsExtensions
 {
 	public static bool Has (this MazeFlags flags, MazeFlags mask) =>

@@ -6,12 +6,16 @@ using Unity.Mathematics;
 [BurstCompile]
 public struct GenerateMazeJob : IJob
 {
+	//References maze gameobject
 	public Maze maze;
 
+	//A seed value used for random generation
 	public int seed;
 
+	//A float between 0 and 1 which determines the probabilty of opening dead ends when generating maze
     public float openDeadEndProbability;
 
+	//Method which generates maze based on the current cell's adjacent available passages until all passages have been explored and filled
 	public void Execute ()
 	{
 		var random = new Random((uint)seed);
@@ -44,12 +48,14 @@ public struct GenerateMazeJob : IJob
 			}
 		}
 
+		//This is where a random dead end could possibly be opened using openDeadEndProbability's value
         if (openDeadEndProbability > 0f)
 		{
 			random = OpenDeadEnds(random, scratchpad);
 		}
 	}
 
+	//Finds available passages from given index, checks neighbours for available directions, used in Execute
     int FindAvailablePassages (
 		int index, NativeArray<(int, MazeFlags, MazeFlags)> scratchpad
 	)
@@ -91,6 +97,7 @@ public struct GenerateMazeJob : IJob
 		return count;
 	}
 
+	//Finds closed passages, used in OpenDeadEnds in order to... well, open dead ends
     int FindClosedPassages (
 		int index, NativeArray<(int, MazeFlags, MazeFlags)> scratchpad, MazeFlags exclude
 	)
@@ -116,6 +123,7 @@ public struct GenerateMazeJob : IJob
 		return count;
 	}
     
+	//Opens dead ends in maze based on a random chance openDeadEndProbability
     Random OpenDeadEnds (
 		Random random, NativeArray<(int, MazeFlags, MazeFlags)> scratchpad
 	)
